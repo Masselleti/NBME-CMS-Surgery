@@ -1204,6 +1204,10 @@
         .lm-card { border:1px solid var(--border); border-radius:14px; background:var(--card); padding:6px 4px; box-shadow:var(--elev-1); overflow:hidden; }
         .lm-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:0 30px; }
         @media (max-width:760px){ .lm-grid{ grid-template-columns:1fr; } }
+        /* By-Block form list: order top-to-bottom down each column (vertical) */
+        .lm-grid.lm-grid-vertical { display:block; columns:2; column-gap:30px; }
+        .lm-grid.lm-grid-vertical > .lm-row { break-inside:avoid; -webkit-column-break-inside:avoid; }
+        @media (max-width:760px){ .lm-grid.lm-grid-vertical { columns:1; } }
         .lm-row { display:flex; align-items:center; gap:14px; padding:15px 18px; border-bottom:1px solid var(--border);
             cursor:pointer; transition:background .12s ease; margin:0; }
         .lm-row:hover { background:var(--hover-bg); }
@@ -2881,6 +2885,7 @@
             const grid = document.getElementById('lm-grid');
             const note = document.getElementById('lm-note');
             grid.innerHTML = '';
+            grid.classList.toggle('lm-grid-vertical', lmView !== 'discipline');
             if (lmView === 'discipline') {
                 buildDisciplineGrid(grid, note, lmSel.discipline, lmUpdateBar);
             } else {
@@ -2990,6 +2995,7 @@
             const grid = document.getElementById('ex-grid');
             const note = document.getElementById('ex-note');
             grid.innerHTML = '';
+            grid.classList.toggle('lm-grid-vertical', exView !== 'discipline');
             if (exView === 'discipline') {
                 buildDisciplineGrid(grid, note, exSel.discipline, exUpdateBar);
             } else {

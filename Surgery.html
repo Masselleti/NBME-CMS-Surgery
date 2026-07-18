@@ -3394,7 +3394,7 @@
                     const idx = currentQuestionIndex + 1;
                     html = `
                     <div class="uw-header">
-                        <div class="uw-header-left"><div class="uw-header-left-name">SURGERY</div>
+                        <div class="uw-header-left"><div class="uw-header-left-name"><span class="ma-name-full">Surgery</span><span class="ma-name-short">SURGERY</span></div>
                             <div class="uw-header-left-title">Question</div>
                         </div>
                         <div class="uw-header-iteminfo">
@@ -3464,7 +3464,7 @@
                     const idx = currentQuestionIndex + 1;
                     html = `
                     <div class="uw-header">
-                        <div class="uw-header-left"><div class="uw-header-left-name">SURGERY</div>
+                        <div class="uw-header-left"><div class="uw-header-left-name"><span class="ma-name-full">Surgery</span><span class="ma-name-short">SURGERY</span></div>
                             <div class="uw-header-left-title">Question</div>
                         </div>
                         <div class="uw-header-iteminfo">
@@ -4608,6 +4608,12 @@ body.in-nbme-question:has(.nbme-skin.uw-skin.nbme-reverse) {
     margin-bottom: 3px; padding-bottom: 3px;
     border-bottom: 1px solid rgba(255,255,255,0.28);
 }
+
+/* ma-name-full (2026-07-17): desktop spells out the full specialty name in
+   the top-left box; the phone layout keeps the short form (user request). */
+.uw-header-left-name .ma-name-short { display: none; }
+html.ma-phone .uw-header-left-name .ma-name-full { display: none; }
+html.ma-phone .uw-header-left-name .ma-name-short { display: inline; }
 </style>
 
 <!-- ma-narrow-rail (2026-07-08): question-number rail ~20% narrower (user

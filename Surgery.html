@@ -3420,7 +3420,7 @@ img.option-image:hover,
                     const idx = currentQuestionIndex + 1;
                     html = `
                     <div class="uw-header">
-                        <div class="uw-header-left"><div class="uw-header-left-name"><span class="ma-name-full">Surgery</span><span class="ma-name-short">SURGERY</span></div>
+                        <div class="uw-header-left"><div class="uw-header-left-name"><span class="ma-name-full">Surgery</span><span class="ma-name-short">SURGERY</span>${maSecsSuffix()}</div>
                             <div class="uw-header-left-title">Question</div>
                         </div>
                         <div class="uw-header-iteminfo">
@@ -3490,7 +3490,7 @@ img.option-image:hover,
                     const idx = currentQuestionIndex + 1;
                     html = `
                     <div class="uw-header">
-                        <div class="uw-header-left"><div class="uw-header-left-name"><span class="ma-name-full">Surgery</span><span class="ma-name-short">SURGERY</span></div>
+                        <div class="uw-header-left"><div class="uw-header-left-name"><span class="ma-name-full">Surgery</span><span class="ma-name-short">SURGERY</span>${maSecsSuffix()}</div>
                             <div class="uw-header-left-title">Question</div>
                         </div>
                         <div class="uw-header-iteminfo">
@@ -6470,6 +6470,44 @@ html.ma-phone #highlight-palette {
     }
     watch('ma-hl-palette');
     watch('highlight-palette');
+})();
+</script>
+
+<!-- ma-header-sections (2026-07-21): the top-left name box also lists which of
+     this viewer's forms are in the current session ("Forms 1/2"; phone
+     shows the short "Fm." form). GROUPS baked from the data.db Subjects table at patch
+     time (header_secs_fleet.py). The suffix derives from the LIVE session ids
+     (currentQuestions), so it holds for picker selections, discipline/system
+     picks, shuffled exam blocks, and resumed sessions alike. Full coverage or
+     a single group -> no suffix. -->
+<style id="ma-header-secs-css">
+.ma-secs-short { display: none; }
+html.ma-phone .ma-secs-long { display: none; }
+html.ma-phone .ma-secs-short { display: inline; }
+</style>
+<script id="ma-header-secs-js">
+(function () {
+    if (window.maSecsSuffix) return;   /* double-insertion sentinel */
+    var GROUPS = [{"n":"1","s":1,"e":50},{"n":"2","s":51,"e":100},{"n":"3","s":101,"e":150},{"n":"4","s":151,"e":200},{"n":"5","s":201,"e":250},{"n":"6","s":251,"e":300},{"n":"7","s":301,"e":350},{"n":"8","s":351,"e":400},{"n":"9","s":401,"e":450}];
+    var UNIT = "Form", UNIT_SHORT = "Fm.";
+    window.maSecsSuffix = function () {
+        try {
+            var qs = (typeof currentQuestions !== 'undefined' && currentQuestions) ? currentQuestions : [];
+            if (!qs.length || GROUPS.length < 2) return '';
+            var present = [];
+            for (var i = 0; i < GROUPS.length; i++) {
+                var g = GROUPS[i];
+                for (var j = 0; j < qs.length; j++) {
+                    var id = qs[j] && qs[j].id;
+                    if (g.ids ? g.ids.indexOf(id) >= 0 : (id >= g.s && id <= g.e)) { present.push(g.n); break; }
+                }
+            }
+            if (!present.length || present.length === GROUPS.length) return '';
+            var nums = present.join('/');
+            var long_ = UNIT + (present.length > 1 ? 's' : '') + ' ' + nums;
+            return ' <span class="ma-secs-long">' + long_ + '</span><span class="ma-secs-short">' + UNIT_SHORT + ' ' + nums + '</span>';
+        } catch (e) { return ''; }
+    };
 })();
 </script>
 </body>

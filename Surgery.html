@@ -1210,7 +1210,7 @@
         .lm-grid.lm-grid-vertical > .lm-row { break-inside:avoid; -webkit-column-break-inside:avoid; }
         @media (max-width:760px){ .lm-grid.lm-grid-vertical { columns:1; } }
         .lm-row { display:flex; align-items:center; gap:14px; padding:15px 18px; border-bottom:1px solid var(--border);
-            cursor:default; transition:background .12s ease; margin:0; }
+            cursor:pointer; transition:background .12s ease; margin:0; }
         .lm-row:hover { background:var(--hover-bg); }
         .lm-cb { width:20px; height:20px; flex:0 0 auto; cursor:pointer; accent-color:var(--nbme-header-bot); }
         .lm-name { flex:1; font-weight:800; color:var(--text-strong); font-size:1.02em; line-height:1.3; }
@@ -2795,7 +2795,7 @@ img.option-image:hover,
             grid.appendChild(colL); grid.appendChild(colR);
         }
 
-        // a flat discipline row (label; only the checkbox selects — body clicks are inert)
+        // a flat discipline row (label; whole row toggles the checkbox)
         function discLeafRow(leafKey, name, sub, count, selSet, onChange, disabled) {
             const row = document.createElement('label');
             row.className = 'lm-row' + (disabled ? ' lm-disabled' : '');
@@ -2803,7 +2803,6 @@ img.option-image:hover,
                 '<input type="checkbox" class="lm-cb"' + (selSet.has(leafKey) ? ' checked' : '') + (disabled ? ' disabled' : '') + '>' +
                 '<span class="lm-name">' + name + '<span class="lm-sub">' + sub + '</span></span>' +
                 '<span class="lm-count">' + count + '</span>';
-            row.addEventListener('click', (e) => { if (!e.target.closest('.lm-cb')) e.preventDefault(); });
             if (!disabled) {
                 const cb = row.querySelector('input');
                 cb.addEventListener('change', () => { if (cb.checked) selSet.add(leafKey); else selSet.delete(leafKey); onChange(); });
@@ -2930,7 +2929,6 @@ img.option-image:hover,
             row.innerHTML = '<input type="checkbox" class="lm-cb"' + (sel.has(key) ? ' checked' : '') + (disabled ? ' disabled' : '') + '>' +
                 '<span class="lm-name">' + name + '<span class="lm-sub">' + sub + '</span></span>' +
                 '<span class="lm-count">' + count + '</span>';
-            row.addEventListener('click', (e) => { if (!e.target.closest('.lm-cb')) e.preventDefault(); });
             if (!disabled) {
                 const cb = row.querySelector('input');
                 cb.addEventListener('change', () => {
@@ -3041,7 +3039,6 @@ img.option-image:hover,
             row.innerHTML = '<input type="checkbox" class="lm-cb"' + (sel.has(key) ? ' checked' : '') + (disabled ? ' disabled' : '') + '>' +
                 '<span class="lm-name">' + name + '<span class="lm-sub">' + sub + '</span></span>' +
                 '<span class="lm-count">' + count + '</span>';
-            row.addEventListener('click', (e) => { if (!e.target.closest('.lm-cb')) e.preventDefault(); });
             if (!disabled) {
                 const cb = row.querySelector('input');
                 cb.addEventListener('change', () => {
